@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Home</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
@@ -10,6 +10,18 @@
     <p>Roles:
         <span th:each="role : ${user.roles}" th:text="${role.name}"></span>
     </p>
+
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <form th:action="@{/admin}">
+            <button type="submit">Admin page</button>
+        </form>
+    </div>
+
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
 </div>
+
 </body>
 </html>

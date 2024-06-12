@@ -93,7 +93,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeRequests()
-                .requestMatchers("/login").permitAll()
+                .requestMatchers("/login", "/login/authenticate").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin(formLogin ->
@@ -109,10 +109,14 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                             .logoutSuccessUrl("/login?logout")
                             .permitAll();
+                })
+                .exceptionHandling(exception -> {
+                    exception.accessDeniedPage("/unauthorized");
                 });
 
         return http.build();
     }
+
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/signin")
+@RequestMapping("/login")
 public class LoginController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -41,11 +41,6 @@ public class LoginController {
 
     public LoginController(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    @GetMapping
-    public String loginView() {
-        return "login";
     }
 
     @PostMapping("/authenticate")
