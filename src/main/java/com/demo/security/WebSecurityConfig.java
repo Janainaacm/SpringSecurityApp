@@ -92,37 +92,25 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeRequests().requestMatchers ( HttpMethod.OPTIONS,"*/").permitAll()
-                .requestMatchers (HttpMethod.GET,"/login").permitAll();
-        http.removeConfigurer( DefaultLoginPageConfigurer.class);
-        http.
-                authorizeRequests()
-                .requestMatchers ("/login").permitAll()
-                .requestMatchers ("/user/**").hasAuthority ("USER")
-
+                .authorizeRequests()
+                .requestMatchers("/login").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin(formLogin ->
                         formLogin
                                 .loginPage("/login")
                                 .permitAll()
-                                .defaultSuccessUrl("/home")
+                                .defaultSuccessUrl("/home", true)
                                 .failureUrl("/login?error")
                 )
-        .logout(lOut -> {
-            lOut.invalidateHttpSession(true)
-                    .clearAuthentication(true)
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/login?logout")
-                    .permitAll();
-        });
-                /*.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/signin", "/css/**").permitAll()
-                        .anyRequest().authenticated())
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-*/
+                .logout(lOut -> {
+                    lOut.invalidateHttpSession(true)
+                            .clearAuthentication(true)
+                            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                            .logoutSuccessUrl("/login?logout")
+                            .permitAll();
+                });
+
         return http.build();
     }
 

@@ -69,6 +69,4 @@ public class LoginController {
         JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles);
         return ResponseEntity.ok(jwtResponse);
     }
-
-
 }

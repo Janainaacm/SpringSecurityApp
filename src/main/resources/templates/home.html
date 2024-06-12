@@ -6,8 +6,10 @@
 </head>
 <body>
 <div class="container">
-    <h2>Welcome Home!</h2>
-    <p>You have successfully logged in.</p>
+    <h2>Welcome Home, <span th:text="${user.username}"></span></h2>
+    <p>Roles:
+        <span th:each="role : ${user.roles}" th:text="${role.name}"></span>
+    </p>
 </div>
 </body>
 </html>
